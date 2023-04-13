@@ -8,11 +8,6 @@ import java.time.ZoneId;
 
 public class Employee extends Person {
 
-	private enum Gender {
-		LAKI_LAKI,
-		PEREMPUAN
-	}
-
 	private Date dateJoined;
 	private boolean isForeigner;
 
@@ -25,18 +20,13 @@ public class Employee extends Person {
 	private List<String> childNames;
 	private List<String> childIdNumbers;
 
-	public Employee(String name, String idNumber, String ad, String address,
-			Date dateJoined, boolean isForeigner, Gender gender) {
-		setName(name);
-		setId(idNumber);
-		setAdress(address);
-		setGender(null);
-		spouse = new Person();
-		spouse.setName(name);
-		spouse.setId(idNumber);
-		spouse.setAdress(address);
-		this.dateJoined = dateJoined;
-		this.isForeigner = isForeigner;
+	public Employee(Person person, Person spouse,
+			Date dateJoined, boolean isForeigner) {
+		this.setName(person.getName());
+		this.setId(person.getId());
+		this.setAdress(person.getAdress());
+		this.setGender(person.getGender());
+		this.spouse = spouse;
 		childNames = new LinkedList<String>();
 		childIdNumbers = new LinkedList<String>();
 
@@ -95,6 +85,6 @@ public class Employee extends Person {
 		}
 
 		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible,
-				spouse.id() == null || spouse.id().equals(""), childIdNumbers.size());
+				spouse.getId() == null || spouse.getId().equals(""), childIdNumbers.size());
 	}
 }
