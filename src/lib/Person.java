@@ -11,6 +11,10 @@ public class Person {
         PEREMPUAN
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
     public void setGender(Gender gender) {
         this.gender = gender;
     }
@@ -31,7 +35,7 @@ public class Person {
         this.address = adress;
     }
 
-    public String id() {
+    public String getId() {
         return id;
     }
 
