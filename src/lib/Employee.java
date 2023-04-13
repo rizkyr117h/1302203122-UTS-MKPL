@@ -6,47 +6,40 @@ import java.util.LinkedList;
 import java.util.List;
 import java.time.ZoneId;
 
-public class Employee {
+public class Employee extends Person {
 
 	private enum Gender {
 		LAKI_LAKI,
 		PEREMPUAN
 	}
 
-	private Gender gender;
-	private String employeeId;
-	private String firstName;
-	private String lastName;
-	private String idNumber;
-	private String address;
-
 	private Date dateJoined;
-
 	private boolean isForeigner;
 
 	private int monthlySalary;
 	private int otherMonthlyIncome;
 	private int annualDeductible;
 
-	private String spouseName;
-	private String spouseIdNumber;
-
+	// Data Family
+	private Person spouse;
 	private List<String> childNames;
 	private List<String> childIdNumbers;
 
-	public Employee(String employeeId, String firstName, String lastName, String idNumber, String address,
+	public Employee(String name, String idNumber, String ad, String address,
 			Date dateJoined, boolean isForeigner, Gender gender) {
-		this.employeeId = employeeId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.idNumber = idNumber;
-		this.address = address;
+		setName(name);
+		setId(idNumber);
+		setAdress(address);
+		setGender(null);
+		spouse = new Person();
+		spouse.setName(name);
+		spouse.setId(idNumber);
+		spouse.setAdress(address);
 		this.dateJoined = dateJoined;
 		this.isForeigner = isForeigner;
-		this.gender = gender;
-
 		childNames = new LinkedList<String>();
 		childIdNumbers = new LinkedList<String>();
+
 	}
 
 	/**
@@ -83,11 +76,6 @@ public class Employee {
 		this.otherMonthlyIncome = income;
 	}
 
-	public void setSpouse(String spouseName, String spouseIdNumber) {
-		this.spouseName = spouseName;
-		this.spouseIdNumber = idNumber;
-	}
-
 	public void addChild(String childName, String childIdNumber) {
 		childNames.add(childName);
 		childIdNumbers.add(childIdNumber);
@@ -96,8 +84,8 @@ public class Employee {
 	public int getAnnualIncomeTax() {
 		// Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah
 		// bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
-		LocalDate currentDate = LocalDate.now();
-		LocalDate joinDate = dateJoined.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate currentDate = LocalDate.now(); // tanggal sekarang
+		LocalDate joinDate = dateJoined.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); //
 		int monthWorkingInYear;
 
 		if (currentDate.getYear() == joinDate.getYear()) {
@@ -107,6 +95,6 @@ public class Employee {
 		}
 
 		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible,
-				spouseIdNumber == null || spouseIdNumber.equals(""), childIdNumbers.size());
+				spouse.id() == null || spouse.id().equals(""), childIdNumbers.size());
 	}
 }
